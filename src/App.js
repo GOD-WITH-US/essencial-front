@@ -2,19 +2,25 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import axios from "axios";
-import Navbar from "./components/Navbar";
+import { useDispatch } from "react-redux";
 
+//== Import actions
+import {getUser} from './actions/user.actions'
 // == Import Pages
 import Home from "./pages/Home";
 import Profil from "./pages/Profil";
 import Trending from "./pages/Trending";
 import error404 from "./pages/error404";
 // == Import Composants
+import Navbar from "./components/Navbar";
 import { UidContext } from "./components/AppContext";
 
 const App = () => {
   /* Je déclare une nouvelle variable d'état avec une valeur a null  */
   const [uid, setUid] = useState(null);
+
+  /*  */
+const dispatch = useDispatch();
 
   /* en utilisant useEffect avec le context je rend disponible l'id de l'utilisateur partout dans mon app */
   useEffect(() => {
@@ -31,6 +37,8 @@ const App = () => {
         .catch((err) => console.log("No token"));
     };
     fetchToken();
+
+    if (uid) dispatch(getUser(uid))
   }, [uid]);
 
   return (
@@ -44,9 +52,9 @@ const App = () => {
 
         <div className="Routing">
           <Routes>
-            <Route path="/" element={Home()} />
-            <Route path="/profil" element={Profil()} />
-            <Route path="/trending" element={Trending()} />
+            <Route path="/" element={<Home />} />
+            <Route path="/profil" element={<Profil />} />
+            <Route path="/trending" element={<Trending />} />
             <Route path="*" element={error404()} />
           </Routes>
         </div>

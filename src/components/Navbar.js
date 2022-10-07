@@ -2,17 +2,19 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { UidContext } from "./AppContext";
+import { useSelector } from "react-redux";
 
 // == Import Composants
+import Logout from "./Log/Logout";
 
 // data, styles et utilitaires
 import logonav from "../media/logo-nav.svg";
 import login from "../media/icons/login.svg";
-import Logout from "./Log/Logout";
 
 const Navbar = () => {
   const uid = useContext(UidContext);
-  
+  /* je récupére mes userData grace au hook useSelector*/
+  const userData = useSelector((state) => state.userReducer );
 
   return (
     <nav>
@@ -28,7 +30,8 @@ const Navbar = () => {
           <li></li>
           <li className="welcome">
             <NavLink to="/profil">
-              <h5>Bienvenue 'valeur dynamique'</h5>
+              {/* on consomme notre data sous la forme d'une valeur dynamique {userData.pseudo }*/}
+              <h5>Bienvenue {userData.pseudo}</h5>
             </NavLink>
           </li>
          <Logout />
